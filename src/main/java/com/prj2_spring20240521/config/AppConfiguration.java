@@ -60,3 +60,4 @@ public class AppConfiguration {
         return http.build();
     }
 }
+
