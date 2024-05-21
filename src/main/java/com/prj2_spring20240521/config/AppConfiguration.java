@@ -1,4 +1,4 @@
-package config;
+package com.prj2_spring20240521.config;
 
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
