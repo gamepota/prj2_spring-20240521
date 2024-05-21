@@ -46,4 +46,8 @@ public class BoardController {
     public void delete(@PathVariable Integer id) {
         service.delete(id);
     }
+    @PutMapping("edit")
+    public void edit(@RequestBody Board board) {
+        service.edit(board);
+    }
 }
