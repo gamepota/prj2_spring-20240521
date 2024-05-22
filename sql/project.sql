@@ -23,3 +23,15 @@ CREATE TABLE member
     inserted  DATETIME     NOT NULL DEFAULT NOW()
 );
 
+#금지 닉네임 만들기
+CREATE TABLE banned
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nick_name VARCHAR(100) NOT NULL UNIQUE
+);
+
+INSERT INTO  banned (nick_name)
+VALUES ('kkk');
+
+
+

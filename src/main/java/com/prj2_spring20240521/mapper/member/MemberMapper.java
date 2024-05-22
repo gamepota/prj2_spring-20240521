@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface MemberMapper {
     @Insert("""
@@ -26,4 +28,19 @@ public interface MemberMapper {
             WHERE nick_name = #{nickName}
             """)
     Member selectByNickName(String nickName);
+
+    @Select("""
+            SELECT *
+            FROM member 
+                    JOIN banned ON member.nick_name = banned.nick_name
+            WHERE banned.nick_name = #{nickName}
+            """)
+    Member checkByRule(String nickName);
+
+    @Select("""
+            SELECT id,nick_name,email,inserted
+            FROM member
+            ORDER BY id DESC
+            """)
+    List<Member> selectAll();
 }

@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
@@ -24,11 +26,11 @@ public class MemberService {
 
 
     public Member getByEmail(String email) {
-        return mapper.selectByEmail(email);
+        return mapper.selectByEmail(email.trim());
     }
 
     public Member getByNickName(String nickName) {
-        return mapper.selectByNickName(nickName);
+        return mapper.selectByNickName(nickName.trim());
     }
 
 
@@ -52,5 +54,13 @@ public class MemberService {
         }
 
         return true;
+    }
+
+    public Member checkByRule(String nickName) {
+        return mapper.checkByRule(nickName);
+    }
+
+    public List<Member> list() {
+        return mapper.selectAll();
     }
 }
