@@ -58,4 +58,5 @@ public class MemberController {
     public List<Member> list() {
         return service.list();
     }
+
 }
