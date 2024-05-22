@@ -46,7 +46,8 @@ public interface MemberMapper {
     List<Member> selectAll();
     @Select("""
             SELECT id,
-                   email,
+                   email, 
+                   password,                                                                    
                    nick_name,
                    inserted
             FROM member
