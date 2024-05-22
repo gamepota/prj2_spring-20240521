@@ -43,4 +43,13 @@ public interface MemberMapper {
             ORDER BY id DESC
             """)
     List<Member> selectAll();
+    @Select("""
+            SELECT id,
+                   email,
+                   nick_name,
+                   inserted
+            FROM member
+            WHERE id = #{id}
+            """)
+    Member selectById(Integer id);
 }
