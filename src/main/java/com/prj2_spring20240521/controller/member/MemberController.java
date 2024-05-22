@@ -69,5 +69,10 @@ public class MemberController {
 
 
     }
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable Integer id) {
+        service.remove(id);
+    }
+
 
 }
