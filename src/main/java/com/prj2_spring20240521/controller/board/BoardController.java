@@ -5,6 +5,8 @@ import com.prj2_spring20240521.domain.board.Board;
 import com.prj2_spring20240521.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,10 +19,13 @@ public class BoardController {
     private final BoardService service;
 
     @PostMapping("add")
-    public ResponseEntity add(@RequestBody Board board) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity add(
+            Authentication authentication,
+            @RequestBody Board board) {
 //        Thread.sleep(10000); => 응답 지연 시키는 메소드인데 이거 말고도 몇개 더 필요함.  쓸 일 있을때 강의 영상05/21 참조
         if (service.validate(board)) {
-            service.add(board);
+            service.add(board, authentication);
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
