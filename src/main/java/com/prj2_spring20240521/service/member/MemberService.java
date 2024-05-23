@@ -80,4 +80,15 @@ public class MemberService {
         }
         return passwordEncoder.matches(member.getPassword(), dbMember.getPassword());
     }
+
+    public void modify(Member member) {
+        if (member.getPassword() != null && member.getPassword().length() > 0) {
+            // 패스워드가 입려괴었으니 바꾸기
+            member.setPassword(passwordEncoder.encode(member.getPassword()));
+        } else {
+            Member dbmember = mapper.selectById(member.getId());
+            member.setPassword(dbmember.getPassword());
+        }
+        mapper.update(member);
+    }
 }
