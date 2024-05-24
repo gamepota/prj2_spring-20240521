@@ -2,6 +2,7 @@ package com.prj2_spring20240521.service.member;
 
 
 import com.prj2_spring20240521.domain.member.Member;
+import com.prj2_spring20240521.mapper.board.BoardMapper;
 import com.prj2_spring20240521.mapper.member.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -24,6 +25,7 @@ public class MemberService {
     final MemberMapper mapper;
     final BCryptPasswordEncoder passwordEncoder; // 단방향성으로만 인코딩 디코딩됨
     final JwtEncoder jwtEncoder;
+    private final BoardMapper boardMapper;
 
     public void add(Member member) {
         member.setPassword(passwordEncoder.encode(member.getPassword()));
@@ -77,6 +79,10 @@ public class MemberService {
     }
 
     public void remove(Integer id) {
+        //board에서 게시물 지우기
+
+        boardMapper.deleteByMemberId(id);
+        //member 테이블에서 지우기
         mapper.deleteById(id);
     }
 

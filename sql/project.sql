@@ -26,11 +26,11 @@ CREATE TABLE member
 #금지 닉네임 만들기
 CREATE TABLE banned
 (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id        INT PRIMARY KEY AUTO_INCREMENT,
     nick_name VARCHAR(100) NOT NULL UNIQUE
 );
 
-INSERT INTO  banned (nick_name)
+INSERT INTO banned (nick_name)
 VALUES ('kkk');
 
 # board 테이블 수정
@@ -53,4 +53,8 @@ DESC board;
 SELECT *
 FROM board
 ORDER BY id DESC;
+
+SELECT *
+FROM member
+WHERE email = 'test5@naver.com';
 
