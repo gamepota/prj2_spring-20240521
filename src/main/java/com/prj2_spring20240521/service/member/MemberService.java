@@ -17,6 +17,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -137,13 +138,18 @@ public class MemberService {
                 result = new HashMap<>();
                 String token = "";
                 Instant now = Instant.now();
+                List<String> authority = mapper.selectAuthorityByMemberId(db.getId());
+
+                String authorityString = authority.stream()
+                        .collect(Collectors.joining(" "));
+
                 // https://github.com/spring-projects/spring-security-samples/blob/main/servlet/spring-boot/java/jwt/login/src/main/java/example/web/TokenController.java
                 JwtClaimsSet claims = JwtClaimsSet.builder()
                         .issuer("self")
                         .issuedAt(now)
                         .expiresAt(now.plusSeconds(60 * 60 * 24 * 7))
                         .subject(db.getId().toString())
-                        .claim("scope", "") // 권한
+                        .claim("scope", authorityString) // 권한
                         .claim("nickName", db.getNickName())
                         .build();
 
