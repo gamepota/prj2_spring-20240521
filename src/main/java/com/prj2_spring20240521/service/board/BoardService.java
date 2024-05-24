@@ -45,10 +45,18 @@ public class BoardService {
     }
 
     public void delete(Integer id) {
-         mapper.deleteById(id);
+        mapper.deleteById(id);
     }
 
     public void edit(Board board) {
         mapper.update(board);
     }
+
+    public boolean hasAccess(Integer id, Authentication authentication) {
+        Board board = mapper.selectById(id);
+
+        return board.getMemberId()
+                .equals(Integer.valueOf(authentication.getName()));
+    }
 }
+
