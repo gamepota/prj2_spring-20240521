@@ -4,6 +4,7 @@ package com.prj2_spring20240521.service.member;
 import com.prj2_spring20240521.domain.member.Member;
 import com.prj2_spring20240521.mapper.member.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -23,6 +24,7 @@ public class MemberService {
     final MemberMapper mapper;
     final BCryptPasswordEncoder passwordEncoder; // 단방향성으로만 인코딩 디코딩됨
     final JwtEncoder jwtEncoder;
+
     public void add(Member member) {
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         member.setEmail(member.getEmail().trim());
@@ -78,8 +80,11 @@ public class MemberService {
         mapper.deleteById(id);
     }
 
-    public boolean hasAccess(Member member) {
-        Member dbMember =mapper.selectById(member.getId());
+    public boolean hasAccess(Member member, Authentication authentication) {
+        if (!member.getId().toString().equals(authentication.getName())) {
+            return false;
+        }
+        Member dbMember = mapper.selectById(member.getId());
 
         if (dbMember == null) {
             return false;
@@ -99,6 +104,7 @@ public class MemberService {
     }
 
     public boolean hasAccessModify(Member member) {
+
         Member dbMember = mapper.selectById(member.getId());
         if (dbMember == null) {
             return false;
