@@ -1,13 +1,13 @@
 package com.prj2_spring20240521.service.board;
 
 import com.prj2_spring20240521.domain.board.Board;
-import com.prj2_spring20240521.domain.member.Member;
 import com.prj2_spring20240521.mapper.board.BoardMapper;
 import com.prj2_spring20240521.mapper.member.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,10 +19,20 @@ public class BoardService {
     private final BoardMapper mapper;
     private final MemberMapper memberMapper;
 
-    public void add(Board board, Authentication authentication) {
-        Member member = memberMapper.selectByEmail(authentication.getName());
+    public void add(Board board, MultipartFile[] files, Authentication authentication) {
         board.setMemberId(Integer.valueOf(authentication.getName()));
+        // 게시물 저장
         mapper.insert(board);
+
+        // db에 해당 게시물의 파일 목록 저장
+        if (files != null) {
+            for (MultipartFile file : files) {
+                mapper.insertFileName(board.getId(), file.getOriginalFilename());
+            }
+        }
+
+        // 실제 파일 저장
+
     }
 
     public boolean validate(Board board) {
