@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -23,7 +24,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity add(
             Authentication authentication,
-            Board board, @RequestParam(value = "files[]", required = false) MultipartFile[] files) {
+            Board board, @RequestParam(value = "files[]", required = false) MultipartFile[] files) throws IOException {
 //        Thread.sleep(10000); => 응답 지연 시키는 메소드인데 이거 말고도 몇개 더 필요함.  쓸 일 있을때 강의 영상05/21 참조
 
         if (service.validate(board)) {
