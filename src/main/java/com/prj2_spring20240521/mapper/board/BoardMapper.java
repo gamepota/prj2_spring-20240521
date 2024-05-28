@@ -119,9 +119,9 @@ public interface BoardMapper {
 
     @Delete("""
             DELETE FROM board_file
-            WHERE board_id= #{boardId}
+            WHERE board_id=#{boardId}
             """)
-    int deleteFileByBoardId(Integer id);
+    int deleteFileByBoardId(Integer boardId);
 
 
     @Select("""

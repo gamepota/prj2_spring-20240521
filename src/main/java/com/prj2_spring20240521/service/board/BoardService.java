@@ -105,10 +105,10 @@ public class BoardService {
     }
 
     public void delete(Integer id) {
-        // disk에 있는 file
+        // file 명 조회
         List<String> fileNames = mapper.selectFileNameByBoardId(id);
 
-
+        // disk 에 있는 file
         String dir = STR."C:/Temp/prj2/\{id}/";
         for (String fileName : fileNames) {
             File file = new File(dir + fileName);
@@ -118,11 +118,11 @@ public class BoardService {
         if (dirFile.exists()) {
             dirFile.delete();
         }
-        //board_file
+
+        // board_file
         mapper.deleteFileByBoardId(id);
-        //board
 
-
+        // board
         mapper.deleteById(id);
     }
 
