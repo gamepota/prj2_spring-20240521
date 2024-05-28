@@ -109,7 +109,7 @@ public class BoardService {
         List<String> fileNames = mapper.selectFileNameByBoardId(id);
 
 
-        String dir = STR."C:/Temp/prj2\{id}/";
+        String dir = STR."C:/Temp/prj2/\{id}/";
         for (String fileName : fileNames) {
             File file = new File(dir + fileName);
             file.delete();
