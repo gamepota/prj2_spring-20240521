@@ -25,6 +25,16 @@ public class BoardController {
             Authentication authentication,
             Board board, @RequestParam(value = "files[]", required = false) MultipartFile[] files) {
 //        Thread.sleep(10000); => 응답 지연 시키는 메소드인데 이거 말고도 몇개 더 필요함.  쓸 일 있을때 강의 영상05/21 참조
+        if (files != null) {
+            System.out.println("files = " + files.length);
+
+
+            for (MultipartFile file : files) {
+                System.out.println("file.name = " + file.getOriginalFilename());
+            }
+
+        }
+
         if (service.validate(board)) {
             service.add(board, authentication);
             return ResponseEntity.ok().build();
