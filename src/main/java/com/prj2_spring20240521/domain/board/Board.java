@@ -15,4 +15,6 @@ public class Board {
     private LocalDateTime inserted;
 
     private MultipartFile[] files;
+    private Integer numberOfImages;
+
 }
