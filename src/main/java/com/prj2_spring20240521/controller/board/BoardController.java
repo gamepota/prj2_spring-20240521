@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity add(
             Authentication authentication,
-            @RequestBody Board board) {
+            Board board, @RequestParam(value = "files[]", required = false) MultipartFile[] files) {
 //        Thread.sleep(10000); => 응답 지연 시키는 메소드인데 이거 말고도 몇개 더 필요함.  쓸 일 있을때 강의 영상05/21 참조
         if (service.validate(board)) {
             service.add(board, authentication);
@@ -77,5 +78,5 @@ public class BoardController {
 
     }
 
-  
+
 }
