@@ -116,7 +116,8 @@ public class BoardService {
                 "boardList", mapper.selectAllPaging(offset, searchType, keyword));
     }
 
-    public Board get(Integer id) {
+    public Map<String, Object> get(Integer id, Authentication authentication) {
+        Map<String, Object> result = new HashMap<>();
         Board board = mapper.selectById(id);
         List<String> fileNames = mapper.selectFileNameByBoardId(id);
         //  http://172.30.1.24:8888/{id}/{name}
@@ -125,8 +126,20 @@ public class BoardService {
                 .toList();
 
         board.setFileList(files);
+        Map<String, Object> like = new HashMap<>();
+        if (authentication == null) {
+            like.put("like", false);
 
-        return board;
+        } else {
+            int c = mapper.selectLikeByBoardIdAndMemberId(id, authentication.getName());
+            like.put("like", c == 1);
+        }
+        like.put("count", mapper.countTotal(id));
+        result.put("board", board);
+        result.put("like", like);
+
+
+        return result;
     }
 
     public void delete(Integer id) {
@@ -206,7 +219,9 @@ public class BoardService {
                 .equals(Integer.valueOf(authentication.getName()));
     }
 
-    public void like(Map<String, Object> req, Authentication authentication) {
+    public Map<String, Object> like(Map<String, Object> req, Authentication authentication) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("like", false);
         Integer boardId = (Integer) req.get("boardId");
         Integer memberId = Integer.valueOf(authentication.getName());
 
@@ -214,11 +229,14 @@ public class BoardService {
         int count = mapper.deleteLikeByBoardIdAndMemberId(boardId, memberId);
 
         //안했으면
-        if (count == 1) {
-            mapper.insertLikeByboardIdAndMemberId(boardId, memberId);
+        if (count == 0) {
+            mapper.insertLikeByBoardIdAndMemberId(boardId, memberId);
+            result.put("like", true);
         }
 
+        result.put("count", mapper.countTotal(boardId));
 
+        return result;
     }
 }
 

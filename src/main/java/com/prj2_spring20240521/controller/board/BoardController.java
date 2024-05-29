@@ -45,13 +45,13 @@ public class BoardController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity get(@PathVariable Integer id) {
-        Board board = service.get(id);
+    public ResponseEntity get(@PathVariable Integer id, Authentication authentication) {
+        Map<String, Object> result = service.get(id, authentication);
 
-        if (board == null) {
+        if (result.get("board") == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(board);
+        return ResponseEntity.ok().body(result);
     }
 
     @DeleteMapping("{id}")
@@ -88,8 +88,8 @@ public class BoardController {
 
     @PutMapping("like")
     @PreAuthorize("isAuthenticated()")
-    public void like(@RequestBody Map<String, Object> req, Authentication authentication) {
-        service.like(req, authentication);
+    public Map<String, Object> like(@RequestBody Map<String, Object> req, Authentication authentication) {
+        return service.like(req, authentication);
     }
 
 

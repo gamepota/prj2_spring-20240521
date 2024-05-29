@@ -149,6 +149,20 @@ public interface BoardMapper {
             INSERT INTO board_like (board_id, member_id)
             VALUES (#{boardId}, #{memberId})
             """)
-    int insertLikeByboardIdAndMemberId(Integer boardId, Integer memberId);
+    int insertLikeByBoardIdAndMemberId(Integer boardId, Integer memberId);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM board_like
+            WHERE board_id=#{boardId}
+            """)
+    int countTotal(Integer boardId);
+
+    @Select("""
+            SELECT COUNT(*) FROM board_like
+            WHERE board_id=#{boardId}
+            AND member_id=#{memberId}    
+            """)
+    int selectLikeByBoardIdAndMemberId(Integer boardId, String memberId);
 }
 
