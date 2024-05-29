@@ -86,5 +86,11 @@ public class BoardController {
 
     }
 
+    @PutMapping("like")
+    @PreAuthorize("isAuthenticated()")
+    public void like(@RequestBody Map<String, Object> req, Authentication authentication) {
+        service.like(req, authentication);
+    }
+
 
 }
