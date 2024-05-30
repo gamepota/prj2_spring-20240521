@@ -39,4 +39,8 @@ public class CommentService {
         }
         return true;
     }
+
+    public void remove(Comment comment) {
+        mapper.deleteById(comment.getId());
+    }
 }
