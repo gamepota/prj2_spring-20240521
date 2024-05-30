@@ -2,6 +2,7 @@ package com.prj2_spring20240521.service.comment;
 
 import com.prj2_spring20240521.domain.comment.Comment;
 import com.prj2_spring20240521.mapper.comment.CommentMapper;
+import com.prj2_spring20240521.mapper.member.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 public class CommentService {
 
     final CommentMapper mapper;
+    private final MemberMapper memberMapper;
 
     public void add(Comment comment, Authentication authentication) {
         comment.setMemberId(Integer.valueOf(authentication.getName()));
@@ -23,6 +25,8 @@ public class CommentService {
     }
 
     public List<Comment> list(Integer boardId) {
+
+
         return mapper.selectAllByBoardId(boardId);
     }
 
