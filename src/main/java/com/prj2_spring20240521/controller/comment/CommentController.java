@@ -6,6 +6,7 @@ import com.prj2_spring20240521.service.comment.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class CommentController {
     }
 
     @DeleteMapping("remove")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity remove(@RequestBody Comment comment, Authentication authentication) {
 
         if (service.hasAccess(comment, authentication)) {
@@ -50,12 +52,13 @@ public class CommentController {
     }
 
     @PutMapping("edit")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity edit(@RequestBody Comment comment, Authentication authentication) {
-        if (service.validate(comment)) {
+        if (service.validate(comment) && service.hasAccess(comment, authentication)) {
             service.edit(comment);
             return ResponseEntity.ok().build();
         } else {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
     }
