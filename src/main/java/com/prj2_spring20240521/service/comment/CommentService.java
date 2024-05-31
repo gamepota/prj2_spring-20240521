@@ -50,7 +50,7 @@ public class CommentService {
             return false;
         }
 
-        if (authentication.getName().equals(db.getMemberId().toString())) {
+        if (!authentication.getName().equals(db.getMemberId().toString())) {
             return false;
         }
 
