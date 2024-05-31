@@ -50,8 +50,14 @@ public class CommentController {
     }
 
     @PutMapping("edit")
-    public void edit(@RequestBody Comment comment, Authentication authentication) {
-        service.edit(comment);
+    public ResponseEntity edit(@RequestBody Comment comment, Authentication authentication) {
+        if (service.validate(comment)) {
+            service.edit(comment);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 }
 
